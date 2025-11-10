@@ -39,7 +39,14 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": ["apps/orderly-platform-e2e/**/*"]
+      "exclude": [
+        "apps/orderly-platform-e2e/**/*",
+        "apps/auth-service-e2e/**/*",
+        "apps/product-service-e2e/**/*",
+        "apps/order-service-e2e/**/*",
+        "apps/notification-service-e2e/**/*",
+        "apps/gateway-e2e/**/*"
+      ]
     }
   ]
 }

@@ -1,0 +1,25 @@
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
+const kafkaBrokers = process.env.KAFKA_BROKERS
+@Module({
+  imports: [ClientsModule.register([
+    {
+      name: "KAFKA_SERVICE",
+      transport: Transport.KAFKA,
+      options: {
+        client: {
+          brokers: [kafkaBrokers]
+        }
+      }
+    }
+  ]), ConfigModule.forRoot({
+    envFilePath: ".env",
+    isGlobal: true,
+  })],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule { }

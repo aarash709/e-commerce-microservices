@@ -38,7 +38,28 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# Nx daemon and task cache
 .nx/cache
 .nx/workspace-data
+.nx/daemon
+.nx/tmp
+
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker related
+docker-compose*.yml
+Dockerfile*
+.docker/
+*.tar
+
+# # prisma
+# **/prisma/*.db
+# **/prisma/*
