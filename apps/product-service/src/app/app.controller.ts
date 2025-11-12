@@ -13,7 +13,7 @@ export class AppController {
   prosess(@Payload() productCreateDto) {
     this.appService.updateProduct({})
     //notification
-    this.kafkaClient.emit("product.prosessed", productCreateDto)
+    this.kafkaClient.emit("product.processed", productCreateDto)
   }
 
   @MessagePattern("product.create")
