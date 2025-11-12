@@ -7,7 +7,7 @@ export class ClientConfigService {
     constructor(private readonly config: ConfigService) { }
 
     getGatewayPort() {
-        return this.config.get<number>("GATEWEAY_PORT");
+        return this.config.get<number>("GATEWAY_PORT");
     }
 
     get gatewayClientOptions(): ClientOptions {

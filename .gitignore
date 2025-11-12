@@ -63,3 +63,5 @@ Dockerfile*
 # # prisma
 # **/prisma/*.db
 # **/prisma/*
+
+error.log

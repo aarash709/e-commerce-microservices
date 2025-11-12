@@ -13,9 +13,10 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "baseUrl": "./",
     "paths": {
-      "@orderly-platform/common": ["./libs/common/src/index.ts"],
-      "@orderly-platform/utils": ["./libs/utils/src/index.ts"]
+      "@orderly-platform/common": ["libs/common/src/index.ts"],
+      "@orderly-platform/utils": ["libs/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
