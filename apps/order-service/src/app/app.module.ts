@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from '../database/database.module';
 const kafkaBrokers = process.env.KAFKA_BROKERS
 @Module({
   imports: [ClientsModule.register([
@@ -18,7 +19,8 @@ const kafkaBrokers = process.env.KAFKA_BROKERS
   ]), ConfigModule.forRoot({
     envFilePath: ".env",
     isGlobal: true,
-  })],
+  }),
+    DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })

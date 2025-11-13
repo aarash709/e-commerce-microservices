@@ -1,7 +1,7 @@
 import { Controller, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
-import { CreateOrderDto } from '../dto/createOrderDto';
+import { CreateOrderDto, ORDER_PATTERN } from '@orderly-platform/common';
 
 @Controller()
 export class AppController {
@@ -9,12 +9,12 @@ export class AppController {
     private readonly appService: AppService,
     @Inject("KAFKA_SERVICE") private readonly kafkaClient: ClientKafka) { }
 
-  @MessagePattern("order.create")
+  @MessagePattern(ORDER_PATTERN.ORDER_CREATE)
   createOrder(@Payload() orderDto: CreateOrderDto) {
     console.log("[ORDER SERVICE] recieved order.created", orderDto)
     this.appService.create(orderDto)
     //notification
-    this.kafkaClient.emit("order.created", orderDto)
+    this.kafkaClient.emit(ORDER_PATTERN.ORDER_CREATED, orderDto)
     //prosess product
     this.kafkaClient.emit("product.prosess", orderDto)
   }
