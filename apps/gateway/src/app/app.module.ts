@@ -7,6 +7,7 @@ import { KAFKA_SERVICE, TCP_SERVICE } from './constants';
 import { AuthController } from './auth/auth.controller';
 import { OrderController } from './order/order.controller';
 import { ClientConfigService, ClientConfigModule } from '@orderly-platform/common'
+import { ProductController } from './product/product.controller';
 
 const kafkaBrokers = process.env.KAFKA_BROKERS
 
@@ -26,7 +27,7 @@ const kafkaBrokers = process.env.KAFKA_BROKERS
     ),
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" })
   ],
-  controllers: [AppController, AuthController, OrderController],
+  controllers: [AppController, AuthController, OrderController, ProductController],
   providers: [AppService,
     {
       provide: TCP_SERVICE,

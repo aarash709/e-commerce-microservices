@@ -1,6 +1,7 @@
 import { Controller, Inject } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
+import { PRODUCT_PATTERNS, CreateProductDto, UpdateProductDto, ProcessProductDto } from '@orderly-platform/common'
 
 @Controller()
 export class AppController {
@@ -9,22 +10,22 @@ export class AppController {
     @Inject("NOTIFICAION_SERVICE") private readonly kafkaClient: ClientKafka
   ) { }
 
-  @MessagePattern("product.prosess")
-  prosess(@Payload() productCreateDto) {
-    this.appService.updateProduct({})
+  @MessagePattern(PRODUCT_PATTERNS.PRODUCT_PROCESS)
+  async process(@Payload() processProductDto: ProcessProductDto) {
+    const processedProduct = await this.appService.handleOrderCreated(processProductDto)
     //notification
-    this.kafkaClient.emit("product.processed", productCreateDto)
+    this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_PROCESSED, processedProduct.name)
   }
 
-  @MessagePattern("product.create")
-  create(@Payload() productCreateDto) {
-    this.appService.createProduct({ name: "procut name", price: 123, stock: 14 })
+  @MessagePattern(PRODUCT_PATTERNS.PRODUCT_CREATE)
+  create(@Payload() productCreateDto: CreateProductDto) {
+    this.appService.createProduct(productCreateDto)
     //notification
-    this.kafkaClient.emit("product.created", productCreateDto)
+    this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_CREATED, productCreateDto)
   }
 
-  @MessagePattern("product.update")
-  update(@Payload() updateProductDto) {
-    this.kafkaClient.emit("product.updated", updateProductDto)
+  @MessagePattern(PRODUCT_PATTERNS.PRODUCT_UPDATE)
+  update(@Payload() updateProductDto: UpdateProductDto) {
+    this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_UPDATED, updateProductDto)
   }
 }
