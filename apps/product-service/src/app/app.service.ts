@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
-import { CreateProductDto, ProcessProductDto, UpdateProductDto } from '@orderly-platform/common';
+import { CreateOrderDto, CreateProductDto, UpdateProductDto } from '@orderly-platform/common';
 
 @Injectable()
 export class AppService {
@@ -20,10 +20,16 @@ export class AppService {
     console.log("[PRODUCT SERVICE] product updated")
   }
   //fires after a simulated payment
-  async handleOrderCreated(processProductDto: ProcessProductDto) {
-    return this.database.product.update({
-      where: { id: processProductDto.productId },
-      data: { stock: { decrement: processProductDto.quantity } }
-    })
+  async handleProcessProducts(orderDto: CreateOrderDto) {
+    console.log("[PRODUCT_SERVICE] processing products...")
+    return this.database.$transaction(
+      orderDto.orders.map((order) =>
+        this.database.product.update({
+          where: { id: order.productId },
+          data: { stock: { decrement: order.quantity } }
+        })
+      )
+    );
   }
+
 }

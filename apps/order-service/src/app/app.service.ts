@@ -8,10 +8,9 @@ export class AppService {
 
   async create(orderDto: CreateOrderDto) {
     console.log("[ORDER SERVICE] creating order", orderDto)
-    const newOrder = await this.databaseService.order.create({
+    await this.databaseService.order.create({
       data: { total: orderDto.total, status: orderDto.status, orders: { create: orderDto.orders } }, include: { orders: true }
     })
-    console.log("created order", newOrder)
   }
 
   getData(): { message: string } {
