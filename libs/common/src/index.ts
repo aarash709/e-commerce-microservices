@@ -10,3 +10,5 @@ export * from './product/product.patterns'
 export * from './product/create.product.dto'
 export * from './product/update.product.dto'
 export * from './product/process.product.dto'
+
+export * from './auth/auth.patterns'

@@ -6,14 +6,15 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [DatabaseModule, ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }), JwtModule.register({
-    secret: 'very_confidetial_and_sercret',
-    global: true,
-    signOptions: {
-      expiresIn: "7d"
-    }
-
-  }),],
+  imports: [DatabaseModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      global: true,
+      signOptions: {
+        expiresIn: "7d"
+      }
+    }),],
   controllers: [AppController],
   providers: [AppService],
 })

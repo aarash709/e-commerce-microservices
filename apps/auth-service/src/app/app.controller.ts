@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { AUTH_PATTERNS } from "@orderly-platform/common";
 
 @Controller()
 export class AppController {
@@ -8,16 +9,18 @@ export class AppController {
     private readonly appService: AppService,
   ) { }
 
-  @MessagePattern("auth.signup")
+  @MessagePattern(AUTH_PATTERNS.AUTH_SIGNUP)
   async signup(@Payload() signupDataDto: { email: string, displayName: string, password: string }) {
     console.log("[AUTH SERVICE] new user", signupDataDto)
+
     return this.appService.signup(signupDataDto)
   }
 
-  @MessagePattern("auth.login")
-  async login(@Payload() data) {
+  @MessagePattern(AUTH_PATTERNS.AUTH_LOGIN)
+  async login(@Payload() data: { email: string, password: string }) {
     console.log("[AUTH_SERVICE] login", data)
-    return this.appService.login(data)
+    const result = this.appService.login(data)
+    return result
   }
 
 }

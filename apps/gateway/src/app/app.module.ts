@@ -8,6 +8,9 @@ import { AuthController } from './auth/auth.controller';
 import { OrderController } from './order/order.controller';
 import { ClientConfigService, ClientConfigModule } from '@orderly-platform/common'
 import { ProductController } from './product/product.controller';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportJwtGuard } from './auth/guards/jwt.guard';
+import { JwtStrategy } from './auth/strategy/JWTStrategy';
 
 const kafkaBrokers = process.env.KAFKA_BROKERS
 
@@ -25,10 +28,15 @@ const kafkaBrokers = process.env.KAFKA_BROKERS
       },
     ],
     ),
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" })
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env" }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      global: true,
+      signOptions: { expiresIn: "7d" }
+    })
   ],
   controllers: [AppController, AuthController, OrderController, ProductController],
-  providers: [AppService,
+  providers: [AppService, PassportJwtGuard, JwtStrategy,
     {
       provide: TCP_SERVICE,
       inject: [ClientConfigService],

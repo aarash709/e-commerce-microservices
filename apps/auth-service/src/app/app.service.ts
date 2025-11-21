@@ -24,8 +24,8 @@ export class AppService {
   async login(data: { email: string; password: string; }) {
     const user = await this.database.user.findFirst({ where: { email: data.email } })
     const hashedPassword = user.password
-    const comprePass = bcrypt.compare(hashedPassword, user.password)
-    if (!user && !comprePass) {
+    const comprePass = bcrypt.compare(data.password, hashedPassword)
+    if (!user || !comprePass) {
       throw new UnauthorizedException("Invalid credentials!");
     }
     return this.generateJWT({
