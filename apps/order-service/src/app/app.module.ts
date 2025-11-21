@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from '../database/database.module';
+import { join } from 'path';
 const kafkaBrokers = process.env.KAFKA_BROKERS
 @Module({
   imports: [ClientsModule.register([
@@ -17,7 +18,7 @@ const kafkaBrokers = process.env.KAFKA_BROKERS
       }
     }
   ]), ConfigModule.forRoot({
-    envFilePath: ".env",
+    envFilePath: join(process.cwd(), ".env"),
     isGlobal: true,
   }),
     DatabaseModule],

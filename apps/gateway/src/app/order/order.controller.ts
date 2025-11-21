@@ -1,18 +1,20 @@
-import { Body, Controller, Inject, Post, Req, UseGuards } from "@nestjs/common"
+import { Body, Controller, Inject, Post, UseGuards } from "@nestjs/common"
 import { ClientKafka } from "@nestjs/microservices"
 import { KAFKA_SERVICE } from "../constants.js"
 import { CreateOrderDto as ClinetCreateOrderDto, ORDER_PATTERN } from "@orderly-platform/common"
 import { PassportJwtGuard } from "../auth/guards/jwt.guard.js"
+import { ConfigService } from "@nestjs/config"
 
 @Controller("order")
 @UseGuards(PassportJwtGuard)
 export class OrderController {
     constructor(
         @Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka,
+        private readonly config: ConfigService
     ) { }
 
     @Post()
-    create(@Body() orderDto: ClinetCreateOrderDto, @Req() req) {
+    create(@Body() orderDto: ClinetCreateOrderDto) {
         console.log("[GATEWAY] order is now beig created", orderDto)
         this.kafkaClient.emit(ORDER_PATTERN.ORDER_CREATE, orderDto)
         return { message: "order sent to order service with kafka", order: orderDto }
