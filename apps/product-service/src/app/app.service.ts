@@ -7,17 +7,17 @@ export class AppService {
   constructor(private readonly database: DatabaseService) { }
 
   async createProduct(createProductDto: CreateProductDto) {
-    this.database.product.create({
+    const data = await this.database.product.create({
       data: createProductDto
     })
-    console.log("[PRODUCT SERVICE] product created")
+    console.log("[PRODUCT SERVICE] product created: ", data)
   }
   async updateProduct(updateProductDto: UpdateProductDto) {
-    this.database.product.update({
+    const updatedData = await this.database.product.update({
       where: { sku: updateProductDto.sku },
       data: updateProductDto
     })
-    console.log("[PRODUCT SERVICE] product updated")
+    console.log("[PRODUCT SERVICE] product updated: ", updatedData)
   }
   //fires after a simulated payment
   async handleProcessProducts(orderDto: CreateOrderDto) {

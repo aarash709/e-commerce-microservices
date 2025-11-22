@@ -26,6 +26,8 @@ export class AppController {
 
   @MessagePattern(PRODUCT_PATTERNS.PRODUCT_UPDATE)
   update(@Payload() updateProductDto: UpdateProductDto) {
+    this.appService.updateProduct(updateProductDto)
+    //notification
     this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_UPDATED, updateProductDto)
   }
 }
