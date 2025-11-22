@@ -3,13 +3,18 @@ import { DatabaseService } from '../database/database.provider';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
+export enum Role {
+  ADMIN = "ADMIN",
+  MODERATOR = "MODERATOR",
+  CUSTOMER = "CUSTOMER"
+}
 @Injectable()
 export class AppService {
   constructor(
     private readonly database: DatabaseService,
     private readonly jwtservice: JwtService) { }
 
-  async signup(data: { email: string, displayName: string, password: string }) {
+  async signup(data: { email: string, displayName: string, password: string, role: Role, }) {
     const hashedPassword = await bcrypt.hash(data.password, 10)
     const createdUser = await this.database.user.create({
       data: {
@@ -17,7 +22,12 @@ export class AppService {
         password: hashedPassword,
       }
     })
-    return this.generateJWT({ sub: createdUser.id.toString(), displayName: createdUser.displayName, email: createdUser.email })
+    return this.generateJWT({
+      sub: createdUser.id.toString(),
+      displayName: createdUser.displayName,
+      email: createdUser.email,
+      role: createdUser.role
+    })
 
   }
 
@@ -31,11 +41,12 @@ export class AppService {
     return this.generateJWT({
       sub: user.id.toString(),
       displayName: user.displayName,
-      email: user.email
+      email: user.email,
+      role: user.role
     })
   }
 
-  async generateJWT(user: { sub: string, displayName: string, email: string }) {
+  async generateJWT(user: { sub: string, displayName: string, email: string, role: string }) {
     const token = await this.jwtservice.signAsync(user)
     return { access_token: token }
   }

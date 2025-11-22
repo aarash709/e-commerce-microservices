@@ -19,10 +19,17 @@ model User {
   email       String
   displayName String
   password    String
+  role       Role  @default(CUSTOMER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([email, password])
   @@index([id])
+}
+
+enum Role {
+  ADMIN
+  MODERATOR
+  CUSTOMER
 }

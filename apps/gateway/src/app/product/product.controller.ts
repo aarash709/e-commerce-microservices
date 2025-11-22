@@ -5,18 +5,22 @@ import { PRODUCT_PATTERNS } from '@orderly-platform/common';
 import { UpdateProductDto as ClientUpdateProductDto } from '@orderly-platform/common';
 import { CreateProductDto as ClientCreateProductDto } from '@orderly-platform/common';
 import { PassportJwtGuard } from '../auth/guards/jwt.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Role, Roles } from '../auth/metadata/roles';
 
 @Controller('product')
-@UseGuards(PassportJwtGuard)
+@UseGuards(PassportJwtGuard, RolesGuard)
 export class ProductController {
     constructor(@Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka) { }
 
     @Post()
+    @Roles([Role.ADMIN, Role.MODERATOR])
     create(@Body() procutDto: ClientCreateProductDto) {
         this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_CREATE, procutDto)
     }
 
     @Patch()
+    @Roles([Role.ADMIN, Role.MODERATOR])
     update(@Body() UpdateProductDto: ClientUpdateProductDto) {
         this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_UPDATE, UpdateProductDto)
     }

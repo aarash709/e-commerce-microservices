@@ -12,6 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportJwtGuard } from './auth/guards/jwt.guard';
 import { JwtStrategy } from './auth/strategy/JWTStrategy';
 import { join } from 'path';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 const kafkaBrokers = process.env.KAFKA_BROKERS
 
@@ -42,7 +43,7 @@ const kafkaBrokers = process.env.KAFKA_BROKERS
     })
   ],
   controllers: [AppController, AuthController, OrderController, ProductController],
-  providers: [AppService, PassportJwtGuard, JwtStrategy,
+  providers: [AppService, PassportJwtGuard, RolesGuard, JwtStrategy,
     {
       provide: TCP_SERVICE,
       inject: [ClientConfigService],
