@@ -24,6 +24,7 @@ async function bootstrap() {
   const swaggerConfig = new DocumentBuilder()
     .setTitle("E-COMMERCE API GATEWAY")
     .setVersion("0.0.1-alpha")
+    .addBearerAuth()
     .build()
   const documentFactory = SwaggerModule.createDocument(app, swaggerConfig)
   SwaggerModule.setup("doc", app, documentFactory)
@@ -32,6 +33,6 @@ async function bootstrap() {
   Logger.log(
     `🚀 Api gateway is running on: ${port}`
   );
-}
+} 
 
 bootstrap();

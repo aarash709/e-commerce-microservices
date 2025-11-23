@@ -43,7 +43,11 @@ const kafkaBrokers = process.env.KAFKA_BROKERS
     })
   ],
   controllers: [AppController, AuthController, OrderController, ProductController],
-  providers: [AppService, PassportJwtGuard, RolesGuard, JwtStrategy,
+  providers: [
+    AppService,
+    PassportJwtGuard,
+    RolesGuard,
+    JwtStrategy,
     {
       provide: TCP_SERVICE,
       inject: [ClientConfigService],

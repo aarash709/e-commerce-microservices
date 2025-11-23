@@ -4,7 +4,9 @@ import { KAFKA_SERVICE } from "../constants.js"
 import { CreateOrderDto as ClinetCreateOrderDto, ORDER_PATTERN } from "@orderly-platform/common"
 import { PassportJwtGuard } from "../auth/guards/jwt.guard.js"
 import { ConfigService } from "@nestjs/config"
+import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from "@nestjs/swagger"
 
+@ApiBearerAuth()
 @Controller("order")
 @UseGuards(PassportJwtGuard)
 export class OrderController {
@@ -13,6 +15,10 @@ export class OrderController {
         private readonly config: ConfigService
     ) { }
 
+    @ApiOperation({ description: "Creates a new order with order items" })
+    @ApiOkResponse({ description: "The order has been creted successfully!", type: ClinetCreateOrderDto })
+    @ApiBadRequestResponse({ description: "Invalid input!" })
+    @ApiUnauthorizedResponse({ description: "Unauthorized access!" })
     @Post()
     create(@Body() orderDto: ClinetCreateOrderDto) {
         console.log("[GATEWAY] order is now beig created", orderDto)
