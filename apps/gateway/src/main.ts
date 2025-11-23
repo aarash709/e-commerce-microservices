@@ -7,6 +7,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app/app.module';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,7 +21,12 @@ async function bootstrap() {
 
   const port = config.get("PORT")
   console.log(`gatewat port through config is: ${port}`)
-
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle("E-COMMERCE API GATEWAY")
+    .setVersion("0.0.1-alpha")
+    .build()
+  const documentFactory = SwaggerModule.createDocument(app, swaggerConfig)
+  SwaggerModule.setup("doc", app, documentFactory)
   app.listen(port)
 
   Logger.log(

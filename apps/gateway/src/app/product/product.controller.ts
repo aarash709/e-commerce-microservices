@@ -7,12 +7,15 @@ import { CreateProductDto as ClientCreateProductDto } from '@orderly-platform/co
 import { PassportJwtGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Role, Roles } from '../auth/metadata/roles';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 
 @Controller('product')
 @UseGuards(PassportJwtGuard, RolesGuard)
 export class ProductController {
     constructor(@Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka) { }
-
+    @ApiCreatedResponse({
+        description: "Create a new product"
+    })
     @Post()
     @Roles([Role.ADMIN, Role.MODERATOR])
     create(@Body() procutDto: ClientCreateProductDto) {
