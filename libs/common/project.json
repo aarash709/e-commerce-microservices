@@ -15,6 +15,9 @@
         "tsConfig": "libs/common/tsconfig.lib.json",
         "assets": []
       }
+    },
+    "test":{
+      "executor": "nx:noop"
     }
   }
 }
