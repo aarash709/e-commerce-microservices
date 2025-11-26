@@ -2,13 +2,11 @@ import { Controller } from '@nestjs/common';
 import { AppService, Role } from './app.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AUTH_PATTERNS } from "@orderly-platform/common";
-import { ConfigService } from '@nestjs/config';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly config: ConfigService
   ) { }
 
   @MessagePattern(AUTH_PATTERNS.AUTH_SIGNUP)

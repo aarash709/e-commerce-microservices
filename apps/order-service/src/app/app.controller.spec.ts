@@ -1,21 +1,40 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ORDER_PATTERN, OrderStatus } from '@orderly-platform/common';
+import { DatabaseService } from '../database/database.service';
 
 describe('AppController', () => {
-  let app: TestingModule;
+  let appController: AppController;
+  const kafkaClient = {
+    emit: jest.fn(),
+  };
+  const database = {
+    order: {
+      create: jest.fn()
+    }
+  }
 
-  beforeAll(async () => {
-    app = await Test.createTestingModule({
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        AppService,
+        { provide: DatabaseService, useValue: database },
+        {
+          provide: "KAFKA_SERVICE",
+          useValue: kafkaClient
+        }],
     }).compile();
+    appController = moduleRef.get<AppController>(AppController);
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect("appController.getData()").toEqual({ message: 'Hello API' });
+  describe('orders', () => {
+    it('should create an order', async () => {
+      const input = { total: 10, status: OrderStatus.PENDING, orders: [{ productId: "123456", quantity: 10, price: 10 }] }
+      const actual = await appController.createOrder(input)
+      expect(actual).toEqual(undefined);
+      expect(kafkaClient.emit).toHaveBeenCalledWith(ORDER_PATTERN.ORDER_CREATED, input)
     });
   });
 });

@@ -47,6 +47,20 @@
         "apps/notification-service-e2e/**/*",
         "apps/gateway-e2e/**/*"
       ]
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "e2e-test"
+      },
+      "inlcude": [
+        "apps/orderly-platform-e2e/**/*",
+        "apps/auth-service-e2e/**/*",
+        "apps/product-service-e2e/**/*",
+        "apps/order-service-e2e/**/*",
+        "apps/notification-service-e2e/**/*",
+        "apps/gateway-e2e/**/*"
+      ]
     }
   ],
   "targetDefaults": {

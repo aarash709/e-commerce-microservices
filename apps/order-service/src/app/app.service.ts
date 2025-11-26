@@ -8,12 +8,8 @@ export class AppService {
 
   async create(orderDto: CreateOrderDto) {
     console.log("[ORDER SERVICE] creating order", orderDto)
-    await this.databaseService.order.create({
+    return await this.databaseService.order.create({
       data: { total: orderDto.total, status: orderDto.status, orders: { create: orderDto.orders } }, include: { orders: true }
     })
-  }
-
-  getData(): { message: string } {
-    return { message: 'Hello API' };
   }
 }

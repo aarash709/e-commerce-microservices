@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { DatabaseService } from '../database/database.provider';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 export enum Role {
   ADMIN = "ADMIN",
@@ -28,14 +28,16 @@ export class AppService {
       email: createdUser.email,
       role: createdUser.role
     })
-
   }
 
   async login(data: { email: string; password: string; }) {
     const user = await this.database.user.findFirst({ where: { email: data.email } })
     const hashedPassword = user.password
-    const comprePass = bcrypt.compare(data.password, hashedPassword)
-    if (!user || !comprePass) {
+    if (!user) {
+      throw new UnauthorizedException("Invalid credentials!");
+    }
+    const comprePass = await bcrypt.compare(data.password, hashedPassword)
+    if (!comprePass) {
       throw new UnauthorizedException("Invalid credentials!");
     }
     return this.generateJWT({
