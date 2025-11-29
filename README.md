@@ -6,7 +6,7 @@
 
 ![Architecture](docs/architecture-simple.png)
 
-## Run tasks
+## How to run the app?
 
 Install dependecies first:
 
@@ -34,7 +34,21 @@ Then To run the dev server for your app, use:
 npx nx run-many -t serve
 ```
 
+##  Enviroment variables
+
+Make sure you have these variables in a .env file on the root of the monorepo:
+
+```sh
+NODE_ENV=development
+GATEWAY_PORT=4100
+KAFKA_BROKERS=localhost:9092
+
+JWT_SECRET=jwt-token-sercret
+JWT_EXPIRES_IN=3600s
+```
+
+And on the order-service, auth-service, product-service you could have an .env file with a  specific `DATABASE_URL`.
+
 ## API test(Swagger)
 
 To test the apis go to this endpoint `/doc` grab a jwt token from `/api/auth/signup` or `/api/login` and use swagger authorize functionality to access other protected endpoints.
-

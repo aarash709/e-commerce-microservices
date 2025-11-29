@@ -19,7 +19,7 @@ async function bootstrap() {
 
   const config = app.get(ConfigService)
 
-  const port = config.get("PORT")
+  const port = config.get("GATEWAY_PORT")
   console.log(`gatewat port through config is: ${port}`)
   const swaggerConfig = new DocumentBuilder()
     .setTitle("E-COMMERCE API GATEWAY")
