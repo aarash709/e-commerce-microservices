@@ -1,4 +1,4 @@
-# Orderly e-commerce microservices
+# e-commerce microservices
 
 ⚠️ Disclaimer: This project is for educational purposes only and should not be used in production.
 
