@@ -14,6 +14,13 @@ Install dependecies first:
 npm install
 ```
 
+For order, product and auth services run
+
+```sh
+npx prisma migrate dev --name init
+npx prisma generate
+```
+
 Install docker desktop and setup kafka and zookeper in docker desktop.
 
 ```sh
