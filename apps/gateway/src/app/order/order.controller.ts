@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, Post, UseGuards } from "@nestjs/common"
-import { ClientKafka, ClientRMQ } from "@nestjs/microservices"
-import { KAFKA_SERVICE, RMQ_SERVICE } from "../constants.js"
+import {  ClientRMQ } from "@nestjs/microservices"
+import {  RMQ_SERVICE } from "../constants.js"
 import { CreateOrderDto as ClinetCreateOrderDto, ORDER_PATTERN } from "@orderly-platform/common"
 import { PassportJwtGuard } from "../auth/guards/jwt.guard.js"
 import { ConfigService } from "@nestjs/config"
@@ -11,7 +11,6 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiU
 @UseGuards(PassportJwtGuard)
 export class OrderController {
     constructor(
-        // @Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka,
         @Inject(RMQ_SERVICE) private readonly rmqClient: ClientRMQ,
         private readonly config: ConfigService
     ) { }

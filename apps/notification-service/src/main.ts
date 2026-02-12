@@ -9,21 +9,9 @@ import { AppModule } from './app/app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  // const kafkaBrokers = process.env.KAFKA_BROKERS
   const rmqBrokers = process.env.RMQ_BROKERS;
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
-    // {
-    //   transport: Transport.KAFKA,
-    //   options: {
-    //     client: {
-    //       brokers: [kafkaBrokers],
-    //     },
-    //     consumer: {
-    //       groupId: "notification_consumer_group"
-    //     }
-    //   }
-    // }
     {
       transport: Transport.RMQ,
       options: {

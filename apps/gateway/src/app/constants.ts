@@ -1,3 +1,2 @@
-export const KAFKA_SERVICE ="KAFKA_SERVICE"
 export const RMQ_SERVICE ="RMQ_SERVICE"
 export const TCP_SERVICE ="TCP_SERVICE"

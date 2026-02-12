@@ -7,7 +7,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { KAFKA_SERVICE, RMQ_SERVICE, TCP_SERVICE } from './constants';
+import {  RMQ_SERVICE, TCP_SERVICE } from './constants';
 import { AuthController } from './auth/auth.controller';
 import { OrderController } from './order/order.controller';
 import {
@@ -21,22 +21,11 @@ import { JwtStrategy } from './auth/strategy/JWTStrategy';
 import { join } from 'path';
 import { RolesGuard } from './auth/guards/roles.guard';
 
-const kafkaBrokers = process.env.KAFKA_BROKERS;
 const rmqBrokers = process.env.RMQ_BROKERS;
 
 @Module({
   imports: [
     ClientConfigModule,
-    // ClientsModule.register([
-    //   {
-    //     name: KAFKA_SERVICE, transport: Transport.KAFKA,
-    //     options: {
-    //       client: {
-    //         brokers: [kafkaBrokers]
-    //       }
-    //     }
-    //   },
-    // ],
     ClientsModule.register([
       {
         name: RMQ_SERVICE,

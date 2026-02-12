@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, Patch, Post, UseGuards } from '@nestjs/common';
-import { KAFKA_SERVICE, RMQ_SERVICE } from '../constants';
-import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
+import {  RMQ_SERVICE } from '../constants';
+import {  ClientRMQ } from '@nestjs/microservices';
 import { PRODUCT_PATTERNS } from '@orderly-platform/common';
 import { UpdateProductDto as ClientUpdateProductDto } from '@orderly-platform/common';
 import { CreateProductDto as ClientCreateProductDto } from '@orderly-platform/common';
@@ -14,7 +14,6 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundRe
 @UseGuards(PassportJwtGuard, RolesGuard)
 export class ProductController {
     constructor
-    // (@Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka
     (@Inject(RMQ_SERVICE) private readonly rmqClient: ClientRMQ
 ) { }
     @ApiOperation({ description: "Creates a new product" })
