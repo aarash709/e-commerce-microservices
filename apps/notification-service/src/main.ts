@@ -9,23 +9,34 @@ import { AppModule } from './app/app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const kafkaBrokers = process.env.KAFKA_BROKERS
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule,
+  // const kafkaBrokers = process.env.KAFKA_BROKERS
+  const rmqBrokers = process.env.RMQ_BROKERS;
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    // {
+    //   transport: Transport.KAFKA,
+    //   options: {
+    //     client: {
+    //       brokers: [kafkaBrokers],
+    //     },
+    //     consumer: {
+    //       groupId: "notification_consumer_group"
+    //     }
+    //   }
+    // }
     {
-      transport: Transport.KAFKA,
+      transport: Transport.RMQ,
       options: {
-        client: {
-          brokers: [kafkaBrokers],
+        urls: [rmqBrokers],
+        queue: 'main_queue',
+        queueOptions: {
+          durable: false,
         },
-        consumer: {
-          groupId: "notification_consumer_group"
-        }
-      }
-    });
-  await app.listen()
-  Logger.log(
-    `🚀Notification service is listening to kafka`
+      },
+    },
   );
-}
+  await app.listen();
+  Logger.log(`🚀Notification service is listening to RMQ`);
+} 
 
 bootstrap();

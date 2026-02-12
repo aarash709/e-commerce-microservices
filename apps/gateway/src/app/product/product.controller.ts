@@ -1,6 +1,6 @@
 import { Body, Controller, Inject, Patch, Post, UseGuards } from '@nestjs/common';
-import { KAFKA_SERVICE } from '../constants';
-import { ClientKafka } from '@nestjs/microservices';
+import { KAFKA_SERVICE, RMQ_SERVICE } from '../constants';
+import { ClientKafka, ClientRMQ } from '@nestjs/microservices';
 import { PRODUCT_PATTERNS } from '@orderly-platform/common';
 import { UpdateProductDto as ClientUpdateProductDto } from '@orderly-platform/common';
 import { CreateProductDto as ClientCreateProductDto } from '@orderly-platform/common';
@@ -13,7 +13,10 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundRe
 @Controller('product')
 @UseGuards(PassportJwtGuard, RolesGuard)
 export class ProductController {
-    constructor(@Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka) { }
+    constructor
+    // (@Inject(KAFKA_SERVICE) private readonly kafkaClient: ClientKafka
+    (@Inject(RMQ_SERVICE) private readonly rmqClient: ClientRMQ
+) { }
     @ApiOperation({ description: "Creates a new product" })
     @ApiCreatedResponse({
         description: "Prodcut has been created!",
@@ -25,12 +28,12 @@ export class ProductController {
     @Post()
     @Roles([Role.ADMIN, Role.MODERATOR])
     create(@Body() procutDto: ClientCreateProductDto) {
-        this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_CREATE, procutDto)
+        this.rmqClient.emit(PRODUCT_PATTERNS.PRODUCT_CREATE, procutDto)
     }
 
     @Patch()
     @Roles([Role.ADMIN, Role.MODERATOR])
     update(@Body() UpdateProductDto: ClientUpdateProductDto) {
-        this.kafkaClient.emit(PRODUCT_PATTERNS.PRODUCT_UPDATE, UpdateProductDto)
+        this.rmqClient.emit(PRODUCT_PATTERNS.PRODUCT_UPDATE, UpdateProductDto)
     }
 }

@@ -14,7 +14,7 @@ export class ClientConfigService {
         return {
             transport: Transport.TCP,
             options: {
-                port: this.getGatewayPort()
+                port: 4001
             }
         }
     }
